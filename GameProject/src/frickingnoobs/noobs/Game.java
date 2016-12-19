@@ -3,6 +3,7 @@ import Display.Display;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
 
 /**
  * Created by .poon on 12/18/2016 AD.
@@ -18,6 +19,18 @@ public class Game implements Runnable{// This is the main class of the game
 
     private BufferStrategy bs;
     private Graphics g;
+
+    //World info
+    World world;
+    int worldWidth, worldHeight = 50;
+
+    //Graphics variables
+    static int TileSize = 32; // In pixels. Everything will be based on this size
+    Camera activeCamera; // Will only render what can be seen by the camera
+
+    //Keep track of in game objects
+    ArrayList<GameObject> objectsInGame = new ArrayList<>(); //Every object that is currently in the game
+
 
     public Game(String title, int width, int height){
         this.width = width;
@@ -41,6 +54,11 @@ public class Game implements Runnable{// This is the main class of the game
         long lastTime = System.nanoTime();
         long timer = 0;
         int ticks = 0;
+
+        //Initialise world
+        if(world == null){
+            CreateNewWorld();
+        }
 
         while(running){
             now = System.nanoTime();
@@ -107,5 +125,8 @@ public class Game implements Runnable{// This is the main class of the game
         bs.show();
         g.dispose();
 
+    }
+    void CreateNewWorld(){
+        world = new World(worldWidth,worldHeight,true);
     }
 }
