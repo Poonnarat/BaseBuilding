@@ -1,4 +1,5 @@
 package frickingnoobs.noobs;
+import DataTypes.Location;
 import Display.Display;
 
 import java.awt.*;
@@ -22,15 +23,19 @@ public class Game implements Runnable{// This is the main class of the game
 
     //World info
     World world;
-    int worldWidth, worldHeight = 50;
+    int worldWidth = 50, worldHeight = 50;
 
     //Graphics variables
-    static int TileSize = 32; // In pixels. Everything will be based on this size
-    Camera activeCamera; // Will only render what can be seen by the camera
+    static int TileSize = 32; // In pixels.
 
     //Keep track of in game objects
     ArrayList<GameObject> objectsInGame = new ArrayList<>(); //Every object that is currently in the game
+    ArrayList<GameObject> objectsToRender; //Every object that will be rendered
 
+    //Render start point
+    public static Location topLeftFocus = new Location(0,0);
+    public static int cameraPixelsWidth = 640;
+    public static int cameraPixelsHeight = 320;
 
     public Game(String title, int width, int height){
         this.width = width;
@@ -39,7 +44,7 @@ public class Game implements Runnable{// This is the main class of the game
     }
     public void init(){// initialize graphic stuff
         display = new Display(title, width, height);
-
+        topLeftFocus = new Location(worldWidth/2,worldHeight/2);
     }
 
     @Override
@@ -56,9 +61,7 @@ public class Game implements Runnable{// This is the main class of the game
         int ticks = 0;
 
         //Initialise world
-        if(world == null){
-            CreateNewWorld();
-        }
+        CreateNewWorld();
 
         while(running){
             now = System.nanoTime();
@@ -106,6 +109,8 @@ public class Game implements Runnable{// This is the main class of the game
     }
 
     private void tick(){
+        objectsToRender = new ArrayList<>();
+        objectsInGame.forEach(GameObject::Update);
     }
 
     private void render(){
@@ -119,7 +124,10 @@ public class Game implements Runnable{// This is the main class of the game
         //Clear Screen
         g.clearRect(0, 0, width, height);
         //Draw Here!
-
+        for (GameObject go: objectsToRender) {
+            g.setColor(Color.green);
+            g.drawRect(Math.round(go.Position.x*TileSize - topLeftFocus.x), Math.round(go.Position.y*TileSize - topLeftFocus.y),TileSize,TileSize);
+        }
 
         //End Drawing!
         bs.show();
