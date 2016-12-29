@@ -36,6 +36,7 @@ public class Game implements Runnable{// This is the main class of the game
     public static Location topLeftFocus = new Location(0,0);
     public static int cameraPixelsWidth = 640;
     public static int cameraPixelsHeight = 320;
+    public static int cameMoveSpeed = 10;
 
     public Game(String title, int width, int height){
         this.width = width;

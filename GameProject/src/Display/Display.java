@@ -2,8 +2,6 @@ package Display;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import static frickingnoobs.noobs.Launcher.game;
 
@@ -39,38 +37,15 @@ public class Display {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);// open on the center of the screen
         frame.setVisible(true);
-        frame.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
+        //Add key bindings
+        //First add input maps
 
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode() == KeyEvent.VK_RIGHT){
-                    game.topLeftFocus.x++;
-                }
-                if(e.getKeyCode() == KeyEvent.VK_LEFT){
-                    game.topLeftFocus.x--;
-                }
-                if(e.getKeyCode() == KeyEvent.VK_DOWN){
-                    game.topLeftFocus.y++;
-                }
-                if(e.getKeyCode() == KeyEvent.VK_UP){
-                    game.topLeftFocus.y--;
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
 
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setMaximumSize(new Dimension(width, height));
         canvas.setMinimumSize(new Dimension(width, height));
+
 
         frame.add(canvas);
         frame.pack();

@@ -1,0 +1,8 @@
+Footman-10
+Footman-15
+Infantry-10
+Footman-15,Infantry-10
+Footman-25,Infantry-15
+Footman-40,Infantry-25,Footman-30
+Infantry-30,Footman-5,Infantry-30
+Infantry-15,Footman-20,Infantry-30
