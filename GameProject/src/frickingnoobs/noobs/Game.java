@@ -2,7 +2,9 @@ package frickingnoobs.noobs;
 import DataTypes.Location;
 import Display.Display;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -18,8 +20,11 @@ public class Game implements Runnable{// This is the main class of the game
     private Thread thread;
     private Boolean running = false;
 
+    /*Old complicated canvas code
     private BufferStrategy bs;
     private Graphics g;
+    */
+    public static GamePanel gp;
 
     //World info
     World world;
@@ -36,16 +41,68 @@ public class Game implements Runnable{// This is the main class of the game
     public static Location topLeftFocus = new Location(0,0);
     public static int cameraPixelsWidth = 640;
     public static int cameraPixelsHeight = 320;
-    public static int cameMoveSpeed = 10;
+    public static int cameMoveSpeed = 2;
+    private static boolean pLeft,pRight,pUp,pDown = false;
 
+    //Actions for keybindings
+    public static Action camUpPress = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+           pUp = true;
+        }
+    };
+    public static Action camDownPress = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pDown = true;
+        }
+    };
+    public static Action camRightPress = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pRight = true;
+        }
+    };
+    public static Action camLeftPress = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pLeft = true;
+        }
+    };
+    public static Action camUpRelease = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pUp = false;
+        }
+    };
+    public static Action camDownRelease = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pDown = false;
+        }
+    };
+    public static Action camLeftRelease = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pLeft = false;
+        }
+    };
+    public static Action camRightRelease = new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            pRight = false;
+        }
+    };
     public Game(String title, int width, int height){
         this.width = width;
         this.height = height;
         this.title = title;
     }
     public void init(){// initialize graphic stuff
+        gp = new GamePanel();
         display = new Display(title, width, height);
         topLeftFocus = new Location(worldWidth/2,worldHeight/2);
+
     }
 
     @Override
@@ -110,11 +167,15 @@ public class Game implements Runnable{// This is the main class of the game
     }
 
     private void tick(){
+        //Update Camera
+        MoveCamera();
         objectsToRender = new ArrayList<>();
         objectsInGame.forEach(GameObject::Update);
     }
 
     private void render(){
+        gp.repaint();
+        /* Old render code
 
         bs = display.getCanvas().getBufferStrategy();
         if(bs == null){
@@ -133,9 +194,40 @@ public class Game implements Runnable{// This is the main class of the game
         //End Drawing!
         bs.show();
         g.dispose();
+        */
 
     }
     void CreateNewWorld(){
         world = new World(worldWidth,worldHeight,true);
+    }
+    void MoveCamera(){
+        int deltaX = 0;
+        int deltaY = 0;
+        if(pDown){
+            deltaY++;
+        }
+        if(pUp){
+            deltaY--;
+        }
+        if(pLeft){
+            deltaX--;
+        }
+        if(pRight){
+            deltaX++;
+        }
+        topLeftFocus.x += cameMoveSpeed*deltaX;
+        topLeftFocus.y += cameMoveSpeed*deltaY;
+    }
+    private class GamePanel extends JPanel {
+        public void paintComponent(Graphics g){
+            super.paintComponent(g);
+            //Draw here
+            if(objectsToRender != null) {
+                for (GameObject go : objectsToRender) {
+                    g.setColor(Color.green);
+                    g.drawRect(Math.round(go.Position.x * TileSize - topLeftFocus.x), Math.round(go.Position.y * TileSize - topLeftFocus.y), TileSize, TileSize);
+                }
+            }
+        }
     }
 }

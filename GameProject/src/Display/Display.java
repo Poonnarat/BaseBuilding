@@ -2,6 +2,7 @@ package Display;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 import static frickingnoobs.noobs.Launcher.game;
 
@@ -37,10 +38,29 @@ public class Display {
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);// open on the center of the screen
         frame.setVisible(true);
+        JPanel gamePanel = game.gp;
+        frame.add(gamePanel);
         //Add key bindings
         //First add input maps
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W,0,false),"PressCamUp");
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_S,0,false),"PressCamDown");
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A,0,false),"PressCamLeft");
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D,0,false),"PressCamRight");
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W,0,true),"ReleaseCamUp");
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_S,0,true),"ReleaseCamDown");
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A,0,true),"ReleaseCamLeft");
+        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D,0,true),"ReleaseCamRight");
 
-
+        //Add action maps
+        gamePanel.getActionMap().put("PressCamUp",game.camUpPress);
+        gamePanel.getActionMap().put("PressCamDown",game.camDownPress);
+        gamePanel.getActionMap().put("PressCamLeft",game.camLeftPress);
+        gamePanel.getActionMap().put("PressCamRight",game.camRightPress);
+        gamePanel.getActionMap().put("ReleaseCamUp",game.camUpRelease);
+        gamePanel.getActionMap().put("ReleaseCamDown",game.camDownRelease);
+        gamePanel.getActionMap().put("ReleaseCamLeft",game.camLeftRelease);
+        gamePanel.getActionMap().put("ReleaseCamRight",game.camRightRelease);
+        /*
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(width, height));
         canvas.setMaximumSize(new Dimension(width, height));
@@ -49,6 +69,7 @@ public class Display {
 
         frame.add(canvas);
         frame.pack();
+        */
     }
 
     public Canvas getCanvas() {
