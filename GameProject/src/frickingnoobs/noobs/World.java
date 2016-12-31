@@ -25,7 +25,14 @@ public class World {
         worldTiles = new Tile[width][height];
         for(int x = 0; x < width; x++){
             for(int y = 0; y < height; y++){
-                Tile tile = new Tile(new Location(x,y), Tile.TerrainType.Grass);
+                Tile.TerrainType type = null;
+                if((x+y)%2 == 1){
+                    type = Tile.TerrainType.Grass;
+                }
+                else{
+                    type = Tile.TerrainType.Dirt;
+                }
+                Tile tile = new Tile(new Location(x,y), type);
                 worldTiles[x][y] = tile;
                 game.objectsInGame.add(tile);
             }

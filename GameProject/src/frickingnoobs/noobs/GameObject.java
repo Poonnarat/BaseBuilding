@@ -12,6 +12,8 @@ public class GameObject {
     //Anything that has to keep track of its position in the game world will inherit from the gameobject class
     Location Position;
 
+    public int sprite; //Temporary variable
+
 
     GameObject() {
         Position = new Location(0, 0);

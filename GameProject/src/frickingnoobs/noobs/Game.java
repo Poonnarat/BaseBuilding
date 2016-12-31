@@ -5,6 +5,8 @@ import Display.Display;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -20,18 +22,14 @@ public class Game implements Runnable{// This is the main class of the game
     private Thread thread;
     private Boolean running = false;
 
-    /*Old complicated canvas code
-    private BufferStrategy bs;
-    private Graphics g;
-    */
     public static GamePanel gp;
 
     //World info
     World world;
-    int worldWidth = 50, worldHeight = 50;
+    int worldWidth = 200, worldHeight = 200;
 
     //Graphics variables
-    static int TileSize = 32; // In pixels.
+    static int TileSize = 200; // In pixels.
 
     //Keep track of in game objects
     ArrayList<GameObject> objectsInGame = new ArrayList<>(); //Every object that is currently in the game
@@ -41,14 +39,14 @@ public class Game implements Runnable{// This is the main class of the game
     public static Location topLeftFocus = new Location(0,0);
     public static int cameraPixelsWidth = 640;
     public static int cameraPixelsHeight = 320;
-    public static int cameMoveSpeed = 2;
+    public static int cameMoveSpeed = 5;
     private static boolean pLeft,pRight,pUp,pDown = false;
 
     //Actions for keybindings
     public static Action camUpPress = new AbstractAction() {
         @Override
         public void actionPerformed(ActionEvent e) {
-           pUp = true;
+            pUp = true;
         }
     };
     public static Action camDownPress = new AbstractAction() {
@@ -93,6 +91,8 @@ public class Game implements Runnable{// This is the main class of the game
             pRight = false;
         }
     };
+
+    //Game methods
     public Game(String title, int width, int height){
         this.width = width;
         this.height = height;
@@ -174,27 +174,8 @@ public class Game implements Runnable{// This is the main class of the game
     }
 
     private void render(){
+        display.Revalidate();
         gp.repaint();
-        /* Old render code
-
-        bs = display.getCanvas().getBufferStrategy();
-        if(bs == null){
-            display.getCanvas().createBufferStrategy(3);
-            return;
-        }
-        g = bs.getDrawGraphics();
-        //Clear Screen
-        g.clearRect(0, 0, width, height);
-        //Draw Here!
-        for (GameObject go: objectsToRender) {
-            g.setColor(Color.green);
-            g.drawRect(Math.round(go.Position.x*TileSize - topLeftFocus.x), Math.round(go.Position.y*TileSize - topLeftFocus.y),TileSize,TileSize);
-        }
-
-        //End Drawing!
-        bs.show();
-        g.dispose();
-        */
 
     }
     void CreateNewWorld(){
@@ -224,8 +205,13 @@ public class Game implements Runnable{// This is the main class of the game
             //Draw here
             if(objectsToRender != null) {
                 for (GameObject go : objectsToRender) {
-                    g.setColor(Color.green);
-                    g.drawRect(Math.round(go.Position.x * TileSize - topLeftFocus.x), Math.round(go.Position.y * TileSize - topLeftFocus.y), TileSize, TileSize);
+                    if(go.sprite == 1){
+                        g.setColor(Color.BLACK);
+                    }
+                    else{
+                        g.setColor(Color.white);
+                    }
+                    g.fillRect(Math.round(go.Position.x * TileSize - topLeftFocus.x), Math.round(go.Position.y * TileSize - topLeftFocus.y), TileSize, TileSize);
                 }
             }
         }

@@ -12,5 +12,12 @@ public class Tile extends GameObject{
     public Tile(Location pos, TerrainType type){
         this.Position = pos;
         this.tileType = type;
+        //Temporary Variables
+        if(type == TerrainType.Grass){
+            this.sprite = 0;
+        }
+        else{
+            this.sprite = 1;
+        }
     }
 }

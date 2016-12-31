@@ -2,8 +2,13 @@ package Display;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.KeyEvent;
 
+import static frickingnoobs.noobs.Game.cameMoveSpeed;
+import static frickingnoobs.noobs.Game.cameraPixelsHeight;
+import static frickingnoobs.noobs.Game.cameraPixelsWidth;
 import static frickingnoobs.noobs.Launcher.game;
 
 /**
@@ -25,7 +30,6 @@ public class Display {
         this.title = title;
         this.width = width;
         this.height = height;
-
         createDisplay();
 
 
@@ -35,44 +39,63 @@ public class Display {
         frame = new JFrame(title);
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// close in the back ground
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setLocationRelativeTo(null);// open on the center of the screen
         frame.setVisible(true);
         JPanel gamePanel = game.gp;
         frame.add(gamePanel);
+        gamePanel.setFocusable(true);
+        gamePanel.addComponentListener(new ComponentListener() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                cameraPixelsWidth = (int)gamePanel.getSize().getWidth();
+                cameraPixelsHeight = (int)gamePanel.getSize().getHeight();
+
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentShown(ComponentEvent e) {
+
+            }
+
+            @Override
+            public void componentHidden(ComponentEvent e) {
+
+            }
+        });
         //Add key bindings
         //First add input maps
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W,0,false),"PressCamUp");
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_S,0,false),"PressCamDown");
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A,0,false),"PressCamLeft");
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D,0,false),"PressCamRight");
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_W,0,true),"ReleaseCamUp");
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_S,0,true),"ReleaseCamDown");
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_A,0,true),"ReleaseCamLeft");
-        gamePanel.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_D,0,true),"ReleaseCamRight");
+        InputMap inputMap = gamePanel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W,0,false),"PressCamUp");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S,0,false),"PressCamDown");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A,0,false),"PressCamLeft");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D,0,false),"PressCamRight");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_W,0,true),"ReleaseCamUp");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_S,0,true),"ReleaseCamDown");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_A,0,true),"ReleaseCamLeft");
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_D,0,true),"ReleaseCamRight");
 
         //Add action maps
-        gamePanel.getActionMap().put("PressCamUp",game.camUpPress);
-        gamePanel.getActionMap().put("PressCamDown",game.camDownPress);
-        gamePanel.getActionMap().put("PressCamLeft",game.camLeftPress);
-        gamePanel.getActionMap().put("PressCamRight",game.camRightPress);
-        gamePanel.getActionMap().put("ReleaseCamUp",game.camUpRelease);
-        gamePanel.getActionMap().put("ReleaseCamDown",game.camDownRelease);
-        gamePanel.getActionMap().put("ReleaseCamLeft",game.camLeftRelease);
-        gamePanel.getActionMap().put("ReleaseCamRight",game.camRightRelease);
-        /*
-        canvas = new Canvas();
-        canvas.setPreferredSize(new Dimension(width, height));
-        canvas.setMaximumSize(new Dimension(width, height));
-        canvas.setMinimumSize(new Dimension(width, height));
-
-
-        frame.add(canvas);
-        frame.pack();
-        */
+        ActionMap actionMap = gamePanel.getActionMap();
+        actionMap.put("PressCamUp",game.camUpPress);
+        actionMap.put("PressCamDown",game.camDownPress);
+        actionMap.put("PressCamLeft",game.camLeftPress);
+        actionMap.put("PressCamRight",game.camRightPress);
+        actionMap.put("ReleaseCamUp",game.camUpRelease);
+        actionMap.put("ReleaseCamDown",game.camDownRelease);
+        actionMap.put("ReleaseCamLeft",game.camLeftRelease);
+        actionMap.put("ReleaseCamRight",game.camRightRelease);
     }
 
     public Canvas getCanvas() {
         return canvas;
+    }
+    public void Revalidate(){
+        frame.revalidate();
     }
 }
