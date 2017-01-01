@@ -5,10 +5,10 @@ package DataTypes;
  */
 public class Location {
 
-    public float x;
+    public int x;
 
-    public float y;
-    public Location(float x, float y){
+    public int y;
+    public Location(int x, int y){
         this.x = x;
         this.y = y;
     }

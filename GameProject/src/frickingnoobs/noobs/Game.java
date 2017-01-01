@@ -29,7 +29,7 @@ public class Game implements Runnable{// This is the main class of the game
     int worldWidth = 200, worldHeight = 200;
 
     //Graphics variables
-    static int TileSize = 200; // In pixels.
+    static int TileSize = 64; // In pixels.
 
     //Keep track of in game objects
     ArrayList<GameObject> objectsInGame = new ArrayList<>(); //Every object that is currently in the game
@@ -211,7 +211,7 @@ public class Game implements Runnable{// This is the main class of the game
                     else{
                         g.setColor(Color.white);
                     }
-                    g.fillRect(Math.round(go.Position.x * TileSize - topLeftFocus.x), Math.round(go.Position.y * TileSize - topLeftFocus.y), TileSize, TileSize);
+                    g.fillRect(go.Position.x * TileSize - topLeftFocus.x, go.Position.y * TileSize - topLeftFocus.y, TileSize, TileSize);
                 }
             }
         }
