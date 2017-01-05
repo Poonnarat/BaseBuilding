@@ -1,13 +1,14 @@
 package frickingnoobs.noobs;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 /**
  * Created by Username on 31/12/2016.
  */
-public class CustButton extends JComponent {
+public class CustButton extends JButton {
 
     //xPos and yPos being position in the main component
     //xPercent and yPercent being percentage of component size to take
@@ -40,5 +41,10 @@ public class CustButton extends JComponent {
 
             }
         });
+    }
+
+    @Override
+    public void paintComponent(Graphics g){
+
     }
 }

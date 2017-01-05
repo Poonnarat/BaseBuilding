@@ -5,9 +5,6 @@ import Display.Display;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
 /**
@@ -204,7 +201,8 @@ public class Game implements Runnable{// This is the main class of the game
             super.paintComponent(g);
             //Draw here
             if(objectsToRender != null) {
-                for (GameObject go : objectsToRender) {
+                for (int x = 0; x < objectsToRender.size();x++) {
+                    GameObject go = objectsToRender.get(x);
                     if(go.sprite == 1){
                         g.setColor(Color.BLACK);
                     }
